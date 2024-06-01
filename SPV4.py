@@ -135,8 +135,9 @@ def prepare_data():
         df["upper_band"] = df_bollinger.bollinger_hband()
         df["middle_band"] = df_bollinger.bollinger_mavg()
         df["lower_band"] = df_bollinger.bollinger_lband()
-        df["aroon_up"] = ta.trend.aroon_up(df["Close"], window=25)
-        df["aroon_down"] = ta.trend.aroon_down(df["Close"], window=25)
+        df["aroon_up"] = ta.trend.aroon_up(high=df["High"], low=df["Low"], window=25)
+        df["aroon_down"] = ta.trend.aroon_down(high=df["High"], low=df["Low"], window=25)
+
         
         open_prices = df["Open"]
         close_prices = df["Close"]
@@ -902,8 +903,10 @@ if __name__ == "__main__":
             prepare_data()
         if args.train:
             train_model()
+        # 評估模型
         if args.eval:
             eval()
+        # 微調模型(在現有的模型下做些微的調整)
         if args.fine_tune:
             fine_tune_model()
         if args.predict:
